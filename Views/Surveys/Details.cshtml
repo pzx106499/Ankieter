@@ -1,0 +1,71 @@
+﻿@model Ankieter.Models.Survey
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Survey</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CreatorId)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CreatorId)
+        </dd>
+    </dl>
+</div>
+<hr />
+
+<h3>Opcje odpowiedzi</h3>
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">
+        @TempData["Error"]
+    </div>
+}
+
+@if (Model.Options != null && Model.Options.Any())
+{
+    foreach (var option in Model.Options)
+    {
+        <div style="margin-bottom:10px;">
+            <strong>@option.Text</strong>
+
+            <form asp-action="Vote" method="post" style="display:inline;">
+                <input type="hidden" name="optionId" value="@option.Id" />
+                <button type="submit" class="btn btn-primary btn-sm">
+                    Głosuj
+                </button>
+            </form>
+
+            <span>
+                Liczba głosów: @option.Votes.Count
+            </span>
+        </div>
+    }
+}
+else
+{
+    <p>Brak opcji dla tej ankiety.</p>
+}
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
