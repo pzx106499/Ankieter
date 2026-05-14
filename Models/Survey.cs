@@ -8,11 +8,11 @@ namespace Ankieter.Models
         public int Id { get; set; }
 
         [Required]
-        [Display(Name = "Tytuł ankiety")]
+        [Display(Name = "Tytuł")]
         public string Title { get; set; } = string.Empty;
 
         [Display(Name = "Opis")]
-        public string? Description { get; set; }
+        public string Description { get; set; } = string.Empty;
 
         public string CreatorId { get; set; } = string.Empty;
 

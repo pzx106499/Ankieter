@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Ankieter.Data;
+using Ankieter.Models;
 
-namespace Ankieter.Models
+namespace Ankieter.Controllers
 {
+    [Authorize(Roles = "Ankieter")]
     public class OptionsController : Controller
     {
         private readonly ApplicationDbContext _context;

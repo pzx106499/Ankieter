@@ -22,12 +22,6 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Description)
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CreatorId)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CreatorId)
-        </dd>
     </dl>
 </div>
 <hr />
@@ -65,7 +59,60 @@ else
 {
     <p>Brak opcji dla tej ankiety.</p>
 }
+
+<hr />
+
+<h3>Wyniki głosowania</h3>
+
+<canvas id="resultsChart" width="400" height="200"></canvas>
+
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    @if (User.IsInRole("Ankieter"))
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+        <span>|</span>
+    }
+
     <a asp-action="Index">Back to List</a>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const labels = [
+        @foreach (var option in Model.Options)
+        {
+            @: @Html.Raw(System.Text.Json.JsonSerializer.Serialize(option.Text)),
+        }
+    ];
+
+    const data = [
+        @foreach (var option in Model.Options)
+        {
+                @: @option.Votes.Count,
+        }
+    ];
+
+    const ctx = document.getElementById('resultsChart');
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Liczba głosów',
+                data: data
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: {
+                        precision: 0
+                    }
+                }
+            }
+        }
+    });
+</script>

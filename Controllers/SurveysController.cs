@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,6 +12,7 @@ using Ankieter.Models;
 
 namespace Ankieter.Controllers
 {
+    [Authorize]
     public class SurveysController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -48,6 +50,8 @@ namespace Ankieter.Controllers
         }
 
         // GET: Surveys/Create
+
+        [Authorize(Roles = "Ankieter")]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +60,8 @@ namespace Ankieter.Controllers
         // POST: Surveys/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+        [Authorize(Roles = "Ankieter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Title,Description")] Survey survey)
@@ -71,6 +77,8 @@ namespace Ankieter.Controllers
         }
 
         // GET: Surveys/Edit/5
+
+        [Authorize(Roles = "Ankieter")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -89,6 +97,7 @@ namespace Ankieter.Controllers
         // POST: Surveys/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        [Authorize(Roles = "Ankieter")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Description,CreatorId")] Survey survey)
@@ -122,6 +131,8 @@ namespace Ankieter.Controllers
         }
 
         // GET: Surveys/Delete/5
+
+        [Authorize(Roles = "Ankieter")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -140,6 +151,7 @@ namespace Ankieter.Controllers
         }
 
         // POST: Surveys/Delete/5
+        [Authorize(Roles = "Ankieter")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
